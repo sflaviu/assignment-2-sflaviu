@@ -1,5 +1,6 @@
 function displayBooks(books) {
     var $tbody = $("tbody");
+    console.log(books[0].name);
     $tbody.empty();
     for(var i in books) {
         var book = books[i];
@@ -22,18 +23,36 @@ function findAll() {
 function populateByName(name) {
     $.get('/booksByName', {name:name}, function(result) {
         displayBooks(result);
+        $('#findByName').val('');
     });
 }
 
 function populateByGenre(genre) {
     $.get('/booksByGenre', {genre:genre}, function(result) {
         displayBooks(result);
+        $('#findByAuthor').val('');
     });
 }
 
 function populateByAuthor(author) {
     $.get('/booksByAuthor', {author:author}, function(result) {
         displayBooks(result);
+    });
+}
+
+function sellBook(transaction) {
+    $.ajax('/sellBook', {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'POST',
+        data: JSON.stringify(transaction),
+        dataType: 'text',
+        success: function() {
+            findAll();
+            $('#isbn,#quantity').val('');
+        }
     });
 }
 $(function() {
@@ -55,6 +74,14 @@ $(function() {
             case "findAllBooks":
                 findAll();
                 break;
+
+            case "sellBook":
+                sellBook({
+                    'isbn': $('#isbn').val(),
+                    'quantity': $('#quantity').val()
+                });
+                break;
+
 
         }
         return false;

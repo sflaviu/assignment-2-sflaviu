@@ -1,6 +1,7 @@
 package bookStore.service;
 
 import bookStore.dto.BookDTO;
+import bookStore.dto.TransactionDTO;
 import bookStore.entity.Book;
 
 import javax.validation.Valid;

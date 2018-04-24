@@ -5,7 +5,7 @@ import bookStore.entity.User;
 import bookStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private ShaPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO userDTO) {
-        User user=new User(userDTO.username,passwordEncoder.encode(userDTO.password));
+        User user=new User(userDTO.username,passwordEncoder.encodePassword(userDTO.password,null));
         return userRepository.save(user);
     }
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(UserDTO userDTO) {
         User user=userRepository.findOne(userDTO.username);
-        user.setPassword(passwordEncoder.encode(userDTO.password));
+        user.setPassword(passwordEncoder.encodePassword(userDTO.password,null));
         userRepository.save(user);
 
     }

@@ -23,8 +23,8 @@ function addUser(user) {
         },
         type: 'POST',
         data: JSON.stringify(user),
-        dataType: 'json',
-        successCreate: function() {
+        dataType: 'text',
+        success: function() {
             refreshUsers();
             $('#username,#password').val('');
         }
@@ -39,8 +39,8 @@ function updateUser(user) {
         },
         type: 'POST',
         data: JSON.stringify(user),
-        dataType: 'json',
-        successUpdate: function() {
+        dataType: 'text',
+        success: function() {
             refreshUsers();
             $('#username,#password').val('');
         }
@@ -51,7 +51,7 @@ function deleteUser(delUsername) {
     $.ajax('/deleteUser', {
         type: 'POST',
         data: delUsername,
-        succesDelete: function() {
+        success: function() {
             refreshUsers();
             $('#delUsername').val('');
         }
@@ -69,7 +69,7 @@ $(function() {
                 });
                 break;
             case "deleteUser":
-                deleteUser($('#delName').val());
+                deleteUser($('#delUsername').val());
                 break;
             case "updateUser":
                 updateUser({

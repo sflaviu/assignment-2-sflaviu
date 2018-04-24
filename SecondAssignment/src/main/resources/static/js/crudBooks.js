@@ -31,8 +31,8 @@ function addBook(book) {
         },
         type: 'POST',
         data: JSON.stringify(book),
-        dataType: 'json',
-        successCreate: function() {
+        dataType: 'text',
+        success: function() {
             refreshBooks();
             $('#name,#isbn, #genre,#price,#quantity').val('');
         }
@@ -47,8 +47,8 @@ function updateBook(book) {
         },
         type: 'POST',
         data: JSON.stringify(book),
-        dataType: 'json',
-        successUpdate: function() {
+        dataType: 'text',
+        success: function() {
             refreshBooks();
             $('#name,#isbn, #genre,#price,#quantity').val('');
         }
@@ -59,7 +59,7 @@ function deleteBook(delName) {
     $.ajax('/deleteBook', {
         type: 'POST',
         data: delName,
-        succesDelete: function() {
+        success: function() {
             refreshBooks();
             $('#delName').val('');
         }

@@ -21,8 +21,8 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public ShaPasswordEncoder passwordEncoder() {
+        return new ShaPasswordEncoder();
     }
     @Autowired
     private DataSource dataSource;
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .disable()
                 .authorizeRequests()
                     .antMatchers("/js/**").permitAll()
-                    .antMatchers("/logout","/user","/books","/booksByName","/booksByGenre","/booksByAuthor").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+                    .antMatchers("/logout","/user","/books","/booksByName","/booksByGenre","/booksByAuthor","/sellBook").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
                     .anyRequest().access("hasRole('ROLE_ADMIN')")
                     .and()
                 .formLogin()

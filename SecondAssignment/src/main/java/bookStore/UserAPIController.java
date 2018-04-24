@@ -26,18 +26,17 @@ public class UserAPIController {
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     public String create(@RequestBody @Valid UserDTO userDTO) {
-        System.out.println("\n\n"+userDTO.username+"\n\n");
         userService.create(userDTO);
-        return "redirect:crudUsers?successCreate";
+        return "redirect:createUser?success";
     }
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-    public String delete(@RequestBody String username) {
-        userService.delete(username.substring(0, username.length() - 1));
-        return "redirect:crudUsers?successDelete";
+    public String delete(@RequestBody String delUsername) {
+        userService.delete(delUsername.substring(0, delUsername.length() - 1));
+        return "redirect:deleteUser?success";
     }
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public String update(@RequestBody UserDTO user) {
         userService.update(user);
-        return "redirect:crudUsers?succesUpdate";
+        return "redirect:updateUser?success";
     }
 }

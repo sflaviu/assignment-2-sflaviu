@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Books</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="js/bookOperations.js"></script>
+    <style>
+        td {
+            width: 200px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        table, th, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/logout}">Logout</a>
+
+<h1>Books:</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+<hr/>
+
+<form>
+    Name: <input type="text" id="name"/>
+    <button id="findByName">Find by title</button>
+</form>
+
+<hr/>
+
+<form>
+    Author:
+    <select name="author" id="author">
+        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+    </select>
+    <button id="findByAuthor">Find by author</button>
+</form>
+
+<hr/>
+
+<form>
+    Genre: <input type="text" id="genre"/>
+    <button id="findByGenre">Find by genre</button>
+</form>
+
+<hr/>
+
+<button id="findAllBooks">Display all books</button>
+
+<hr/>
+
+<form>
+
+    ISBN: <input type="text" id="isbn"/>
+    Price: <input type="text" id="price"/>
+    Quantity: <input type="text" id="quantity"/>
+    <button id="sellBook">Sell book</button>
+</form>
+
+
+</body>
+</html>

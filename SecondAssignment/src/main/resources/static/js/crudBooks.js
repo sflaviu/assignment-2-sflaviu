@@ -66,6 +66,24 @@ function deleteBook(delName) {
     });
 }
 
+
+
+function populateByGoogleName(name) {
+    $.get('/booksByGoogle', {name:name}, function(result) {
+        displayBooks(result);
+        $('#findByGoogle').val('');
+    });
+}
+
+function generateReport(report) {
+    $.ajax('/generateReport', {
+        type: 'POST',
+        data: report,
+        success: function() {
+        }
+    });
+}
+
 $(function() {
     refreshBooks();
     $('button').click(function() {
@@ -92,6 +110,12 @@ $(function() {
                    'price': $('#price').val(),
                    'quantity': $('#quantity').val()
                });
+            case "findByGoogle":
+                populateByGoogleName($('#googleName').val());
+                break;
+            case "generateReport":
+                generateReport($('#report').val());
+                break;
         }
         return false;
     });

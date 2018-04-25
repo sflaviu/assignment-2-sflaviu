@@ -65,6 +65,28 @@
         <button id="delete">Delete</button>
     </form>
 
+    <hr/>
     <a th:href="@{/authors/create}">Create Author</a>
+
+    <hr/>
+    <form>
+        Ask Google! <br />
+        Name: <input type="text" id="googleName"/>
+        <button id="findByGoogle">Ask for suggestions!</button>
+        Save by ISBN: <input type="text" id="googleISBN"/>
+        <button id="saveByGoogle">Save suggestion</button>
+    </form>
+
+    <hr/>
+
+    <form>
+        Generate Out-of-stock report <br />
+        <select name="report" id="report">
+            <option value="csv">CSV</option>
+            <option value="pdf">PDF</option>
+        </select>
+        <button id="generateReport">Generate report!</button>
+    </form>
+
 </body>
 </html>

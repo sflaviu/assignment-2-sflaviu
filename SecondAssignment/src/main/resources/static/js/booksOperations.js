@@ -49,12 +49,14 @@ function sellBook(transaction) {
         type: 'POST',
         data: JSON.stringify(transaction),
         dataType: 'text',
-        success: function() {
+        success: function(response) {
             findAll();
+            $('#paid').val(response);
             $('#isbn,#quantity').val('');
         }
     });
 }
+
 $(function() {
     $('button').click(function() {
         switch(this.id)
@@ -81,8 +83,6 @@ $(function() {
                     'quantity': $('#quantity').val()
                 });
                 break;
-
-
         }
         return false;
     });

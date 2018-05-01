@@ -52,11 +52,15 @@
         </select>
         ISBN: <input type="text" id="isbn"/>
         Genre: <input type="text" id="genre"/>
-        Price: <input type="text" id="price"/>
-        Quantity: <input type="text" id="quantity"/>
+        Price: <input type="number" id="price"/>
+        Quantity: <input type="number" id="quantity"/>
         <button id="create">Create</button>
         <button id="update">Update by ISBN</button>
     </form>
+    <div  style="padding: 0;">
+        <ul id="result">
+        </ul>
+    </div>
 
     <hr/>
 
@@ -87,6 +91,7 @@
         </select>
         <button id="generateReport">Generate report!</button>
     </form>
+
 
 </body>
 </html>

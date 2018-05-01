@@ -9,5 +9,5 @@ public interface UserService {
     List<User> getAll();
     User create(UserDTO userDTO);
     void delete(String username);
-    void update(UserDTO userDTO);
+    User update(UserDTO userDTO);
 }

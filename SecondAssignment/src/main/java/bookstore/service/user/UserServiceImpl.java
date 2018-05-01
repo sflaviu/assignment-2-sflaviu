@@ -13,14 +13,14 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
 
-    @Autowired
+    private UserRepository userRepository;
     private ShaPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,ShaPasswordEncoder shaPasswordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder=shaPasswordEncoder;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO userDTO) {
-        User user=new User(userDTO.username,passwordEncoder.encodePassword(userDTO.password,null));
+        User user=new User(userDTO.username,passwordEncoder.encodePassword(userDTO.password,null),"EMPLOYEE");
         return userRepository.save(user);
     }
 
@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserDTO userDTO) {
+    public User update(UserDTO userDTO) {
         User user=userRepository.findOne(userDTO.username);
         user.setPassword(passwordEncoder.encodePassword(userDTO.password,null));
-        userRepository.save(user);
+        return userRepository.save(user);
 
     }
 

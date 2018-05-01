@@ -2,6 +2,7 @@ package bookstore.service.book;
 
 import bookstore.dto.BookDTO;
 import bookstore.entity.Book;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface LocalBookService {
     List<Book> getAll();
     Book create(BookDTO bookDTO);
     void delete(String isbn);
-    void update(BookDTO bookDTO);
+    Book update(BookDTO bookDTO);
 
     List<Book> findByGenre(String genre);
     List<Book> findByName(String name);

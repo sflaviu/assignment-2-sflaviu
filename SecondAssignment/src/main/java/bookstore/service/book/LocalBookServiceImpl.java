@@ -7,6 +7,7 @@ import bookstore.repository.BookRepository;
 import bookstore.service.author.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class LocalBookServiceImpl implements LocalBookService {
     }
 
     @Override
-    public void update(BookDTO bookDTO) {
+    public Book update(BookDTO bookDTO) {
         Book book=bookRepository.findByIsbn(bookDTO.isbn);
         book.setName(bookDTO.name);
         book.setGenre(bookDTO.genre);
@@ -53,7 +54,7 @@ public class LocalBookServiceImpl implements LocalBookService {
         book.setAuthor(a);
         book.setPrice(bookDTO.price);
         book.setQuantity(bookDTO.quantity);
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Override

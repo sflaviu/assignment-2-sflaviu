@@ -4,12 +4,11 @@ import bookstore.dto.UserDTO;
 import bookstore.entity.User;
 import bookstore.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,18 +23,41 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    public String create(@RequestBody @Valid UserDTO userDTO) {
-        userService.create(userDTO);
-        return "redirect:createUser?success";
+    public List<String> create(@RequestBody @Valid UserDTO userDTO,BindingResult bindingResult)
+    {
+        List<String> result =new ArrayList<>();
+        if(bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error->result.add(error.getDefaultMessage()));
+        }
+        else {
+
+            if(userService.create(userDTO)!=null)
+                result.add("Creating successful!");
+            else
+                result.add("Saving not successful!");
+        }
+        return result;
+
     }
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-    public String delete(@RequestBody String delUsername) {
+    public void delete(@RequestBody String delUsername) {
         userService.delete(delUsername.substring(0, delUsername.length() - 1));
-        return "redirect:deleteUser?success";
-    }
+   }
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public String update(@RequestBody UserDTO user) {
-        userService.update(user);
-        return "redirect:updateUser?success";
+    public List<String> update(@RequestBody @Valid UserDTO userDTO,BindingResult bindingResult) {
+        List<String> result =new ArrayList<>();
+        if(bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error->result.add(error.getDefaultMessage()));
+        }
+        else {
+
+            if(userService.update(userDTO)!=null)
+                result.add("Updating successful!");
+            else
+                result.add("Updating not successful!");
+        }
+        return result;
     }
+
+
 }

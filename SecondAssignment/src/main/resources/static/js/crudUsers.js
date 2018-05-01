@@ -9,6 +9,17 @@ function displayUsers(users) {
     }
 }
 
+function displayResult(result)
+{
+    var list = "";
+    var rez=JSON.parse(result);
+    for (var i = 0; i < rez.length; i++) {
+        list +="<li>"+rez[i]+"</li>";
+    }
+
+    $("#result").append(list);
+
+}
 function refreshUsers() {
     $.get('/users', {}, function(result) {
         displayUsers(result);
@@ -24,9 +35,10 @@ function addUser(user) {
         type: 'POST',
         data: JSON.stringify(user),
         dataType: 'text',
-        success: function() {
+        success: function(result) {
             refreshUsers();
             $('#username,#password').val('');
+            displayResult(result);
         }
     });
 }
@@ -40,9 +52,10 @@ function updateUser(user) {
         type: 'POST',
         data: JSON.stringify(user),
         dataType: 'text',
-        success: function() {
+        success: function(result) {
             refreshUsers();
             $('#username,#password').val('');
+            displayResult(result);
         }
     });
 }

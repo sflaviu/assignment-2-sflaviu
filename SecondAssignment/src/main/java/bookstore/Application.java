@@ -3,10 +3,10 @@ package bookstore;
 import bookstore.repository.AuthorRepository;
 import bookstore.service.author.AuthorService;
 import bookstore.service.author.AuthorServiceImpl;
-import bookstore.service.author.CachingAuthorService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * Created by Catalysts on 8/9/2015.
  */
 
+@EnableCaching
 @EnableAutoConfiguration
 @ComponentScan
 @SpringBootApplication
@@ -28,6 +29,6 @@ public class Application {
 
     @Bean(name = "AuthorService")
     public AuthorService authorService(AuthorRepository repository) {
-        return new CachingAuthorService(new AuthorServiceImpl(repository));
+        return new AuthorServiceImpl(repository);
     }
 }

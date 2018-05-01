@@ -5,6 +5,7 @@ import bookstore.entity.Author;
 import bookstore.repository.AuthorRepository;
 import bookstore.service.author.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Cacheable("authors")
     public List<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
+    @Cacheable("authors")
     public Author findById(int authorId) {
         return authorRepository.findOne(authorId);
     }

@@ -20,7 +20,7 @@ public class Book {
     @Column(unique = true)
     private String isbn;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Author author;
 
     public Book() {}

@@ -25,34 +25,41 @@ public class PDFReportGenerator implements ReportGenerator {
 
 
             contentStream.beginText();
-            contentStream.newLineAtOffset(25, 800);
+            contentStream.newLineAtOffset(25, 750);
 
             String header="Out of stock report";
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 18);
 
             contentStream.showText(header);
-            contentStream.newLine();
+            contentStream.endText();
+
 
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+
+            int currentLineYOffset=700;
 
             int i=1;
             for(Book book:outOfStockBooks)
             {
-                contentStream.showText(Integer.toString(i));
-                contentStream.newLine();
+                contentStream.beginText();
+                contentStream.newLineAtOffset(25, currentLineYOffset);
+                contentStream.showText(i+" ");
                 contentStream.showText("Name: "+book.getName());
-                contentStream.newLine();
-                contentStream.showText("ISBN: "+book.getIsbn());
-                contentStream.newLine();
-                contentStream.showText("Genre: "+book.getGenre());
-                contentStream.newLine();
-                contentStream.showText("Price: "+book.getPrice());
-                contentStream.newLine();
+                contentStream.showText(" ISBN: "+book.getIsbn());
+                contentStream.showText(" Genre: "+book.getGenre());
+                contentStream.showText(" Price: "+book.getPrice());
+                contentStream.endText();
+                currentLineYOffset-=20;
+
+                if(currentLineYOffset<0) {
+                    myPage = new PDPage();
+
+                    document.addPage(myPage);
+                    contentStream = new PDPageContentStream(document, myPage);
+                }
                 i++;
             }
 
-
-            contentStream.endText();
 
             contentStream.close();
 

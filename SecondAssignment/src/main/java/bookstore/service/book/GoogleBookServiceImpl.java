@@ -3,6 +3,8 @@ package bookstore.service.book;
 import bookstore.dto.AuthorDTO;
 import bookstore.entity.Author;
 import bookstore.entity.Book;
+import bookstore.repository.AuthorRepository;
+import bookstore.repository.BookRepository;
 import bookstore.service.author.AuthorService;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -22,9 +24,17 @@ public class GoogleBookServiceImpl implements GoogleBookService {
 
     private JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-    @Autowired
-    AuthorService authorService;
+    List<Book> lastSearch;
 
+    BookRepository bookRepository;
+    AuthorRepository authorRepository;
+
+
+    @Autowired
+    public GoogleBookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+    }
 
     private final String apiKey = "AIzaSyDAAr0BYZNOJtbQT_aXO-JZvyorjCpoS5M";
     private final String appName = "SamarghitanFlaviuSDAssignment";
@@ -34,6 +44,8 @@ public class GoogleBookServiceImpl implements GoogleBookService {
     private final String authorQuery="intitle:";
 
 
+
+
     @Override
     public List<Book> findSuggestion(String searchedString) {
 
@@ -41,7 +53,7 @@ public class GoogleBookServiceImpl implements GoogleBookService {
         List<Book> foundByAuthor=null;
         List<Book> foundByGenre=null;
         try {
-            foundByName=queryGoogleBooks(searchedString);
+            foundByName=queryGoogleBooks(nameQuery+searchedString);
             foundByAuthor=queryGoogleBooks(authorQuery+searchedString);
             foundByGenre=queryGoogleBooks(genreQuery+searchedString);
 
@@ -50,7 +62,20 @@ public class GoogleBookServiceImpl implements GoogleBookService {
         }
         foundByName.addAll(foundByAuthor);
         foundByName.addAll(foundByGenre);
+
+        lastSearch=foundByName;
         return foundByName;
+    }
+
+    @Override
+    public void saveSuggestion(String isbn) {
+        for(Book q:lastSearch)
+            if(q.getIsbn().equals(isbn))
+            {
+                authorRepository.save(q.getAuthor());
+                bookRepository.save(q);
+                break;
+            }
     }
 
     private List<Book> queryGoogleBooks(String query) throws Exception {
@@ -81,9 +106,6 @@ public class GoogleBookServiceImpl implements GoogleBookService {
 
                 // Title.
                 newBook.setName(volumeInfo.getTitle());
-
-                // Author(s).
-               // AuthorDTO authoDTO=new AuthorDTO();
 
                 String authorName;
                 if(volumeInfo.getAuthors()==null)

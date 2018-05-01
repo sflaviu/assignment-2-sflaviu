@@ -1,6 +1,3 @@
-/**
- * Created by Catalysts on 8/9/2015.
- */
 function displayBooks(books) {
     var $tbody = $('tbody');
     $tbody.empty();
@@ -15,6 +12,18 @@ function displayBooks(books) {
         $('<td>').html(book.quantity).appendTo($row);
         $row.appendTo($tbody);
     }
+}
+
+function displayResult(result)
+{
+    var list = "";
+    var rez=JSON.parse(result);
+    for (var i = 0; i < rez.length; i++) {
+        list +="<li>"+rez[i]+"</li>";
+    }
+
+    $("#result").append(list);
+
 }
 
 function refreshBooks() {
@@ -32,9 +41,10 @@ function addBook(book) {
         type: 'POST',
         data: JSON.stringify(book),
         dataType: 'text',
-        success: function() {
+        success: function(result) {
             refreshBooks();
             $('#name,#isbn, #genre,#price,#quantity').val('');
+            displayResult(result);
         }
     });
 }
@@ -48,9 +58,10 @@ function updateBook(book) {
         type: 'POST',
         data: JSON.stringify(book),
         dataType: 'text',
-        success: function() {
+        success: function(result) {
             refreshBooks();
             $('#name,#isbn, #genre,#price,#quantity').val('');
+            displayResult(result);
         }
     });
 }
@@ -79,6 +90,16 @@ function generateReport(report) {
     $.ajax('/generateReport', {
         type: 'POST',
         data: report,
+        success: function() {
+        }
+    });
+}
+
+function saveSuggestion(googleISBN)
+{
+    $.ajax('/saveSuggestion', {
+        type: 'POST',
+        data: googleISBN,
         success: function() {
         }
     });
@@ -115,6 +136,9 @@ $(function() {
                 break;
             case "generateReport":
                 generateReport($('#report').val());
+                break;
+            case "saveByGoogle":
+                saveSuggestion($('#googleISBN').val());
                 break;
         }
         return false;
